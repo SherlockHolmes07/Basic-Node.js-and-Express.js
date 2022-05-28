@@ -1,8 +1,11 @@
 //importing the required modules
 let express = require("express");
 let app = express();
+let bodyParser = require("body-parser");
 require("dotenv").config(); //importing the dotenv module
 console.log("Hello World");
+
+app.use(bodyParser.urlencoded({extended: false}))
 
 //Giving access to static assets
 app.use("/public", express.static(__dirname + "/public"));
@@ -49,10 +52,16 @@ app.get("/:word/echo", function (req, res) {
     echo: req.params.word,
   });
 });
+
 //query parameter
 app.route("/name").get((req, res) => {
   res.json({
     name: req.query.first + " " + req.query.last,
   });
+}).post(function (req, res) {
+    res.json({
+        "name": req.body.first + " " + req.body.last
+    })
 });
+
 module.exports = app;
